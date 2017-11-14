@@ -8,8 +8,10 @@
     <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- <link rel="stylesheet" href="style.css"> -->
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
 </head>
 
 <body>
@@ -30,29 +32,35 @@
             </label>
         </div>
 
-        <div v-if="vue.exp" class="form-group">
-            <label for="exp">defina un numero</label>
-            <input type="number" class="form-control" v-model="vue.years">
-        </div>
+        <template v-if="vue.exp">
+            <div  class="form-group">
+                <label for="exp">defina un numero</label>
+                <input type="number" class="form-control" v-model="vue.years">
+            </div>
 
-        <div class="form-group">
-            <!-- <label for="exp">defina un numero</label> -->
-        </div>
-
-
+            <div v-if="vue.years < 2" class="form-group" :class="{'has-error': descriptionError }">
+                <label for="exp">defina un comentario</label>
+                <textarea v-model="vue.description" class="form-control"  rows="4" ></textarea>
+                <!-- condition -->
+                <p v-if="descriptionError!=''" class="help-block"> 
+                    {{ descriptionError}}
+                </p>
+            </div>
+        </template>
 
         <footer class="footer">
             <p> footer data </p>
         </footer>
     </div>
-    <!-- vue js -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.3/dist/vue.js"></script>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
+    <!-- vue js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.3/dist/vue.js"></script>
 
 
     <script>
@@ -65,10 +73,23 @@
                     years: 0,
                     description: ''
                 }
+
             },
             computed: {
                 reversedName: function() {
                     return this.name.split('').reverse().join('');
+
+                },
+                descriptionError: function() {
+                    var val = this.vue.description.trim();
+                    if (val == '') {
+                        return 'El campo es obligatorio'
+
+                    }
+                    if (val.length < 5) {
+                        return 'Debe ingresar mas de 5 caracteres'
+
+                    }
 
                 }
             }
